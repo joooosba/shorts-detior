@@ -1,9 +1,9 @@
-# 🎬 쇼츠 스튜디오 (shorts-editor)
+# 🎬 쇼츠 스튜디오 (shorts-detior)
 
 유튜브 쇼츠 · 인스타 릴스 · 네이버 클립용 **9:16 세로(1080×1920)** 영상을 브라우저에서 바로 편집하고 저장하는 웹 편집기입니다.
 서버·계정·설치가 필요 없고, 올린 파일은 어디로도 전송되지 않습니다(모든 처리는 브라우저 안에서).
 
-- 주소(배포 후): https://joooosba.github.io/shorts-editor/
+- 주소(배포 후): https://joooosba.github.io/shorts-detior/
 
 ## 기능
 
