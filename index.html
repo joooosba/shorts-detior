@@ -9,7 +9,7 @@
 <meta property="og:title" content="쇼츠 스튜디오 · 9:16 세로 영상 편집기">
 <meta property="og:description" content="사진과 짧은 영상으로 쇼츠·릴스용 세로 영상을 만들고 MP4로 저장하세요. 설치·서버·로그인 없이 브라우저에서만 동작합니다.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <script>
 /* 진단용: 페이지에서 발생한 오류를 모아 둔다(사용 화면에는 영향 없음). */
 window.__errs = [];
@@ -92,6 +92,15 @@ window.__errs = [];
         <button id="exportBtn" class="primary-btn" type="button">
           <span aria-hidden="true">⬇︎</span> 영상 저장
         </button>
+      </div>
+
+      <div class="format-row">
+        <span class="fr-label">저장 형식</span>
+        <div class="seg mini" id="formatSeg" role="group" aria-label="저장 형식">
+          <button type="button" data-v="auto" class="on">자동 (MP4 우선)</button>
+          <button type="button" data-v="webm">WebM</button>
+        </div>
+        <span class="fr-note" id="formatNote">MP4는 아이폰·인스타에 바로 올리기 좋습니다.</span>
       </div>
 
       <div class="export-card" id="exportCard" hidden>
@@ -270,11 +279,12 @@ window.__errs = [];
       <li>컷 길이(기본 2.5초), 모션, 전환, 자막 위치·크기·스타일을 정합니다. <b>상단 훅 타이틀</b>은 영상 내내 위에 남습니다.</li>
       <li><b>안전 영역</b>을 켜면 플랫폼 UI가 가리는 곳이 점선으로 보입니다. 이 선은 저장된 영상에는 그려지지 않습니다.</li>
       <li>배경음악을 올리고 볼륨을 맞춘 뒤 <b>영상 저장</b>을 누르면 MP4(지원 시) 또는 WebM으로 내려받습니다. 길이만큼 실시간으로 녹화되니 탭을 유지해 주세요.</li>
+      <li>브라우저가 MP4에 넣는 오디오는 <b>Opus</b>라서, 인스타 릴스나 아이폰 사진 앱에서 소리가 안 날 수 있습니다. 그럴 때는 저장 형식을 <b>WebM</b>으로 바꿔 유튜브에 올리거나, 편집 앱에서 MP4로 한 번 내보내 주세요.</li>
     </ol>
     <p class="modal-note">안전 영역 기준 — 상단 10%: 채널명·검색 / 하단 22%: 캡션·설명 / 우측 22%: 좋아요·댓글·공유 버튼</p>
   </div>
 </div>
 
-<script src="app.js"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

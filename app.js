@@ -26,7 +26,8 @@
     bgm: { name: '', vol: 0.6 },
     playing: false,
     playhead: 0,
-    exporting: false
+    exporting: false,
+    format: 'auto'
   };
 
   var cutSeq = 0;
@@ -591,7 +592,9 @@
 
   function setSeg(container, value) {
     Array.prototype.forEach.call(container.children, function (b) {
-      b.classList.toggle('on', b.dataset.v === value);
+      var on = b.dataset.v === value;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
     });
   }
 
@@ -1091,14 +1094,13 @@
   /* ------------------------------------------------------------------ 내보내기 */
   function pickMime() {
     if (typeof window.MediaRecorder === 'undefined') return '';
-    var list = [
+    var mp4 = [
       'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
       'video/mp4;codecs=avc1.42E01E',
-      'video/mp4',
-      'video/webm;codecs=vp9,opus',
-      'video/webm;codecs=vp8,opus',
-      'video/webm'
+      'video/mp4'
     ];
+    var webm = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    var list = state.format === 'webm' ? webm : mp4.concat(webm);
     for (var i = 0; i < list.length; i++) {
       try { if (MediaRecorder.isTypeSupported(list[i])) return list[i]; } catch (e) {}
     }
@@ -1212,7 +1214,7 @@
         if (pr && pr.catch) pr.catch(function () {});
       }
 
-      var shownMime = (mime || 'video/webm').indexOf('mp4') >= 0 ? 'MP4' : 'WebM';
+      var shownMime = (rec.mimeType || mime || 'video/webm').indexOf('mp4') >= 0 ? 'MP4' : 'WebM';
       t0 = performance.now();
 
       function step() {
@@ -1249,6 +1251,8 @@
             return;
           }
           var ext = type.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+          var codecs = rec.mimeType || mime || '';
+          var audioOpus = /opus/i.test(codecs);
           var name = 'shorts_' + stamp() + '.' + ext;
           var url = URL.createObjectURL(blob);
           var a = document.createElement('a');
@@ -1260,9 +1264,14 @@
           setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
 
           var mb = (blob.size / 1048576).toFixed(1);
-          setProgress(100, '저장 완료 · ' + ext.toUpperCase(), name + ' · ' + fmt(total) + '초 · ' + mb + 'MB 내려받기 시작');
-          if (ext === 'webm') {
-            document.getElementById('exFoot').textContent += ' · 이 브라우저는 MP4 녹화를 지원하지 않아 WebM으로 저장했습니다. 유튜브는 그대로 업로드되고, 인스타 릴스는 MP4 변환이 필요할 수 있어요.';
+          setProgress(100, '저장 완료 · ' + (ext === 'mp4' ? 'MP4' : 'WebM'), name + ' · ' + fmt(total) + '초 · ' + mb + 'MB 내려받기 시작');
+          var footEl = $('exFoot');
+          if (ext === 'webm' && state.format !== 'webm') {
+            footEl.textContent += ' · 이 브라우저는 MP4 녹화를 지원하지 않아 WebM으로 저장했습니다. 유튜브는 그대로 업로드되고, 인스타 릴스는 MP4 변환이 필요할 수 있어요.';
+          } else if (ext === 'webm') {
+            footEl.textContent += ' · 유튜브 업로드에 최적인 형식입니다.';
+          } else if (audioOpus && state.bgm.name) {
+            footEl.textContent += ' · 오디오는 Opus로 담겼습니다. 아이폰·인스타에서 소리가 인식되지 않으면 저장 형식을 WebM으로 바꿔 유튜브에 올려 주세요.';
           }
           toast('영상 저장 완료 · ' + name);
           state.playhead = 0;
@@ -1280,6 +1289,16 @@
   }
 
   $('exportBtn').addEventListener('click', exportVideo);
+
+  $('formatSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-v]');
+    if (!b || state.exporting) return;
+    state.format = b.dataset.v;
+    setSeg($('formatSeg'), state.format);
+    $('formatNote').textContent = state.format === 'webm'
+      ? '유튜브 업로드에 최적입니다. 오디오가 항상 정상으로 들어갑니다.'
+      : 'MP4는 아이폰·인스타에 바로 올리기 좋습니다.';
+  });
 
   /* ------------------------------------------------------------------ 도움말 */
   $('helpBtn').addEventListener('click', function () { $('helpModal').hidden = false; });

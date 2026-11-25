@@ -177,6 +177,14 @@ button{cursor:pointer}
   .primary-btn{flex:1;justify-content:center}
 }
 
+.format-row{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:0 4px;
+}
+.fr-label{font-size:.72rem;font-weight:700;color:var(--muted);flex:none}
+.seg.mini{flex:none}
+.seg.mini button{padding:5px 10px;font-size:.72rem;min-width:0;border-radius:8px;white-space:nowrap}
+.fr-note{font-size:.68rem;color:var(--muted-2);line-height:1.4;flex:1;min-width:0}
+
 /* ---------------------------------------------------------------- 내보내기 */
 .export-card{
   margin-top:12px;padding:13px 15px;border-radius:16px;
