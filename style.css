@@ -92,7 +92,7 @@ button{cursor:pointer}
 }
 .ed-stage{
   position:relative;margin:0 auto;
-  height:min(70vh,700px);aspect-ratio:9/16;width:auto;max-width:100%;
+  height:min(64vh,660px);aspect-ratio:9/16;width:auto;max-width:100%;
   background:#000;border-radius:16px;overflow:hidden;
   box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 18px 40px -22px #000;
 }
